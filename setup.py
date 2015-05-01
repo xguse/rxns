@@ -21,6 +21,9 @@ Documentation
 The full documentation is at http://rxns.rtfd.org."""
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
+
+requires = ['click']
+
 setup(
     name='rxns',
     version='0.1.0',
@@ -33,9 +36,13 @@ setup(
         'rxns',
     ],
     package_dir={'rxns': 'rxns'},
+    entry_points={
+            'console_scripts': [
+                'react = rxns.rxns:cli',
+            ]
+        },
     include_package_data=True,
-    install_requires=[
-    ],
+    install_requires=requires,
     license='MIT',
     zip_safe=False,
     keywords='rxns',
