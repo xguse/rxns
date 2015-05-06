@@ -32,6 +32,8 @@ def cli(ctx, config):
         conf = munch.munchify(yaml.load(config))
         ctx.obj.CONFIG = conf
 
+
+
     recipes.RecipeRegistry(ctx)
     reagents.ReagentRegistry(ctx)
 

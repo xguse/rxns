@@ -42,22 +42,23 @@ class Recipe(object):
     Base class to represent a set of reactants that make up a whole or partial recipe for a reaction.
 
     Attributes:
-        conf (dict): configuration values
+        conf (dict): configuration values.
         name (str): its a name come on.
         path (str): recipe file location.
         deps (list): references to any `Recipe` objects that this one depends on.
-        reagents (dict): mappings to the `Reagent` objects that make up this recipe's ingredients
+        reagents (dict): mappings to the `Reagent` objects that make up this recipe's ingredients.
+        table (pandas.DataFrame): pandas table read directly from `path`.
 
     """
 
-    def __init__(self, ctx, name, path, dependencies=None):
+    def __init__(self, conf, name, path, dependencies=None):
         """
         Initializes a recipe object containing the information stored in the `recipe_path` argument.
 
         Loads, initializes, and registers any new reactants defined in the included `recipe_path`
 
         Args:
-            ctx (click.Context): the context for this run
+            conf (dict): configuration values.
             name (str): unique name for this recipe.
             path (str): location of table-formatted recipe definition.
             dependencies (list): list of recipe names that this recipe depends on.
@@ -66,12 +67,26 @@ class Recipe(object):
             None
         """
 
-        self.conf = ctx.obj.CONFIG
+        self.conf = conf
         self.name = name
         self.path = path
         self.deps = dependencies
         self.reagents = None
         self.table = pd.read_table(path, sep='|')
+
+    def _recode_reagents(self):
+        """
+        Process `self.table`, converting reagent strings into `Reagent` objects and registering them.
+
+        Also stores them in `self.reagents`
+
+        Returns:
+            None
+        """
+
+        raise NotImplementedError
+
+
 
 
 
