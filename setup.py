@@ -19,7 +19,7 @@ doclink = """
 Documentation
 -------------
 
-The full documentation is at http://rxns.rtfd.org."""
+The full documentation is at http://chrysopoeia.rtfd.org."""
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 
@@ -31,7 +31,7 @@ requires = ['click',
             ]
 
 setup(
-    name='rxns',
+    name='chrysopoeia',
     version='0.1.0',
     description='Help plan molecular biology reaction sets including stock solutions and master mixes that your '
                 'target reactions depend on.',
@@ -45,14 +45,14 @@ setup(
     package_dir={'rxns': 'rxns'},
     entry_points={
         'console_scripts': [
-            'react = rxns.rxns:cli',
+            'chrysopoeia = rxns.rxns:cli',
             ]
         },
     include_package_data=True,
     install_requires=requires,
     license='MIT',
     zip_safe=False,
-    keywords='rxns',
+    keywords='rxns, chrysopoeia',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
