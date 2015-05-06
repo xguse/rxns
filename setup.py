@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""setup.py."""
 
 import os
 import sys
@@ -22,12 +23,18 @@ The full documentation is at http://rxns.rtfd.org."""
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 
-requires = ['click']
+requires = ['click',
+            'munch',
+            'pubchempy',
+            'pandas',
+            'pyyaml',
+            ]
 
 setup(
     name='rxns',
     version='0.1.0',
-    description='"Help plan molecular biology reaction sets including stock solutions and master mixes that your target reactions depend on."',
+    description='Help plan molecular biology reaction sets including stock solutions and master mixes that your '
+                'target reactions depend on.',
     long_description=readme + '\n\n' + doclink + '\n\n' + history,
     author='Gus Dunn',
     author_email='gus.dunn@yale.edu',
@@ -37,8 +44,8 @@ setup(
     ],
     package_dir={'rxns': 'rxns'},
     entry_points={
-            'console_scripts': [
-                'react = rxns.rxns:cli',
+        'console_scripts': [
+            'react = rxns.rxns:cli',
             ]
         },
     include_package_data=True,
