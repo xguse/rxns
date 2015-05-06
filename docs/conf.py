@@ -46,7 +46,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'rxns'
+project = u'chrysopoeia'
 copyright = u'2015, Gus Dunn'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -192,7 +192,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'rxns.tex', u'rxns Documentation',
+  ('index', 'chrysopoeia.tex', u'chrysopoeia Documentation',
    u'Gus Dunn', 'manual'),
 ]
 
@@ -222,7 +222,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'rxns', u'rxns Documentation',
+    ('index', 'chrysopoeia', u'chrysopoeia Documentation',
      [u'Gus Dunn'], 1)
 ]
 
@@ -236,8 +236,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'rxns', u'rxns Documentation',
-   u'Gus Dunn', 'rxns', 'One line description of project.',
+  ('index', 'chrysopoeia', u'chrysopoeia Documentation',
+   u'Gus Dunn', 'chrysopoeia', 'One line description of project.',
    'Miscellaneous'),
 ]
 
