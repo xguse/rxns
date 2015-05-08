@@ -12,4 +12,11 @@ errors.py
 """
 __author__ = 'Gus Dunn'
 
-class
+class ValidationError(Exception):
+
+    """
+    Validation failed.
+    """
+ 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

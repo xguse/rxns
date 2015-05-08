@@ -45,7 +45,7 @@ setup(
     package_dir={'rxns': 'rxns'},
     entry_points={
         'console_scripts': [
-            'chrysopoeia = rxns.rxns:cli',
+            'chrysopoeia = rxns.main:cli',
             ]
         },
     include_package_data=True,

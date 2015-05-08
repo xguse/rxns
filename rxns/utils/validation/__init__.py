@@ -10,5 +10,4 @@ Purpose: Provide modules with logic to validate user input and configurations.
 validation/__init__.py
 =================================================
 """
-__author__ = 'Gus Dunn'
 

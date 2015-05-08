@@ -2,7 +2,7 @@
 Tests for `rxns` module.
 """
 import pytest
-from rxns import rxns
+from rxns import main
 
 
 class TestRxns(object):

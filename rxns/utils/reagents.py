@@ -18,59 +18,6 @@ import pubchempy as pcp
 import pandas as pd
 
 
-class Reagent(object):
-
-    """
-    Class to represent a generic reagent.
-
-    Enables looking up recipes that contain this reagent, etc.
-
-    pcid (int): The PubChem CID of this reagent.
-    recipes (pandas.DataFrame): Pandas `DataFrame` containing recipe IDs and links to the objects.
-
-    """
-
-    def __init__(self, pubchemid):
-        """
-        Initializes a reagent.
-
-        Uses the pubchemid to obtain a pubchempy.Compound object from pubchem.
-        
-        Args:
-            name (str): human-readable name
-            pubchemid (int): CID number of reagent on PubChem [https://pubchem.ncbi.nlm.nih.gov/]
-        
-        Returns:
-            None
-        """
-
-        self.pcid = pubchemid
-        self.pubchem = pcp.Compound.from_cid(pubchemid)
-
-        # self.recipes = pd.DataFrame(columns=['IDS', 'OBJS', ])  ## THis should be in the RecipeRegistry
-
-
-    def register_reagent(self, ctx):
-        """
-        Registers reagent with `ReagentRegistry` object.
-
-        If no registry exists in the current context, `ReagentRegistry` creates and registers one with the context.
-
-        Args:
-            ctx (click.Context): reference to the current context
-
-        Returns:
-            None
-        """
-
-        try:
-            ctx.obj["REAGENTS"].register_reagent(self)
-        except TypeError as exc:
-            if "object is not subscriptable" in exc.args[0]:
-                ctx.obj["REAGENTS"] = ReagentRegistry()
-                ctx.obj["REAGENTS"].register_reagent(self)
-
-
 
 
 class ReagentRegistry(object):
@@ -92,32 +39,50 @@ class ReagentRegistry(object):
         Raises:
             TODO
         """
+        ctx.obj.REAGENTS = self
 
-        self.reagents = pd.DataFrame(columns=['PCID', 'OBJS'])
+        self.obj = ctx.obj
+        self.reagents = pd.DataFrame()
+        self.deps = pd.DataFrame()
 
-        self._add_to_context(ctx)
+        self._
 
-    def _add_to_context(self, ctx):
+        # 1. create table of reagents tagged with which recipe they belong to
+        # 2. establish unique index ID for each reagent
+        # 3. extract dependencies for each reagent to a separate table
+        for recipe in {recipe.name: recipe for recipe in self._yield_recipes(ctx.obj.CONFIG)}:
+
+            recipe.table['recipe'] = recipe.name
+
+            self.reagents = pd.concat([self.reagents, recipe.table])
+
+
+
+
+
+
+    def _yield_recipes(self, conf):
         """
-        Adds this registry to `ctx`.
-
-        extended description
+        Yields a list of instantiated `Recipe` objects.
 
         Args:
-            ctx (click.Context): the current application context
+            conf (dict): A dict of the configuration values used for this call.
 
-        Returns:
-            None
+        Yield:
+            `Recipe` objects
         """
+        assert isinstance(conf, dict)
 
-        ctx.obj.REAGENTS = self
+        for name, path in conf.recipe_files.items():
+            try:
+                deps = conf.dependencies[name]
+                yield Recipe(conf, name, path, dependencies=deps)
+            except KeyError:
+                yield Recipe(conf, name, path, dependencies=None)
 
     def register_reagents(self, recipe):
         """
-        Registers `Reagent` objects for all reagents listed in `recipe`.
-
-        Adds all of `recipe`'s reagents to `self.reagents` if not already present.
-        Adds reference to the `recipe` to `self.recipes`
+        Registers reagents listed in `recipe`.
 
 
         Args:
@@ -126,8 +91,6 @@ class ReagentRegistry(object):
         Returns:
             None
         """
-
-        raise NotImplementedError()
 
 
 

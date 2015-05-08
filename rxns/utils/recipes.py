@@ -71,8 +71,8 @@ class Recipe(object):
         self.name = name
         self.path = path
         self.deps = dependencies
-        self.reagents = None
         self.table = pd.read_table(path, sep='|')
+        self.reagents = None
 
     def _recode_reagents(self):
         """
@@ -86,13 +86,23 @@ class Recipe(object):
 
         raise NotImplementedError
 
+    def _process_reagents(self):
+        """
+        Process this recipe's reagents and log them into the reagents registry.
+
+        Returns:
+            None
+        """
+
+        raise NotImplementedError
+
 
 
 
 
 class RecipeRegistry(object):
     """
-    Class to represent and expose a registry of all reagents to the current running context.
+    Class to represent and expose a registry of all recipes to the current running context.
     """
 
     def __init__(self, ctx):
@@ -108,27 +118,10 @@ class RecipeRegistry(object):
         Raises:
             TODO
         """
-        conf = ctx.obj.CONFIG
-        
-        self.conf = conf
-        self.recipes = {recipe.name: recipe for recipe in self._yield_recipes(conf)}
-
-        self._add_to_context(ctx)
-
-    def _add_to_context(self, ctx):
-        """
-        Adds this registry to `ctx`.
-
-        extended description
-
-        Args:
-            ctx (click.Context): the current application context
-
-        Returns:
-            None
-        """
-
         ctx.obj.RECIPES = self
+
+        self.obj = ctx.obj
+        self.registry = {recipe.name: recipe for recipe in self._yield_recipes(ctx.obj.CONFIG)}
 
     def _yield_recipes(self, conf):
         """
@@ -145,26 +138,9 @@ class RecipeRegistry(object):
         for name, path in conf.recipe_files.items():
             try:
                 deps = conf.dependencies[name]
-                yield Recipe(name, path, dependencies=deps)
+                yield Recipe(conf, name, path, dependencies=deps)
             except KeyError:
-                yield Recipe(name, path, dependencies=None)
-
-    def register_recipe(self, recipe):
-        """
-        Registers `Recipe` objects for all recipes listed in `recipe`.
-
-        Adds all of `recipe`'s reagents to `self.reagents` if not already present.
-        Adds reference to the `recipe` to `self.recipes`
-
-
-        Args:
-            recipe (rxn.utils.recipes.Recipe): a recipe object
-
-        Returns:
-            None
-        """
-
-        raise NotImplementedError()
+                yield Recipe(conf, name, path, dependencies=None)
 
 
 
